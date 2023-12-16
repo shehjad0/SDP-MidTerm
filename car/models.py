@@ -22,6 +22,15 @@ class CommentModel(models.Model):
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     
-    
     def __str__(self):
         return self.name
+    
+class OrderModel(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    car_model = models.ForeignKey(CarModel, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    total_price = models.IntegerField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.car_model.name}"

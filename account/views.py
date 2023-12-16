@@ -2,8 +2,12 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib import messages
-from .forms import RegistrationForm
+from .forms import RegistrationForm, ProfileUpdateForm
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.views.generic.edit import UpdateView
+from django.contrib.auth.models import User
 
 class SignUp(View):
     template_name = 'account/signup.html'
@@ -31,12 +35,36 @@ class SignIn(LoginView):
         messages.success(self.request, 'Signed in successfully')
         return super().form_valid(form)
     
-    def form_invalid(self, form):
-        messages.error(self.request, 'Invalid information. Please try again.')
-        return super().form_invalid(form)
-    
 
 class SignOut(LogoutView):
     def get_success_url(self):
         messages.success(self.request, 'Signed out successfully')
         return reverse_lazy('home')
+    
+
+@method_decorator(login_required, name='dispatch')
+class ProfileView(View):
+    template_name = 'account/profile.html'
+
+    def get(self, request):
+        user = request.user
+        return render(request, self.template_name, {'user': user})
+    
+    
+@method_decorator(login_required, name='dispatch')
+class ProfileUpdateView(UpdateView):
+    model = User
+    form_class = ProfileUpdateForm
+    template_name = 'account/profile_update.html'
+    success_url = reverse_lazy('profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Profile updated successfully.')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Profile update failed. Please try again.')
+        return super().form_invalid(form)

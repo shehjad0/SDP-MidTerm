@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Order History{% endblock %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2 class="text-warning">Order History | Purchased Cars ({{ orders|length }})</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Car Model</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Total Price</th>
+          <th scope="col">Ordered on</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+          <tr>
+            <td>{{ order.car_model.name }}</td>
+            <td>{{ order.quantity }}</td>
+            <td>{{ order.total_price }}</td>
+            <td>{{ order.timestamp }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

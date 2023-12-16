@@ -22,6 +22,7 @@
     
     <div class="container mt-5">
         <h1 class="py-4">Car Listings</h1>
+        {% if cars %}
         <div class="d-flex justify-content-center">
             <a href="{% url "home" %}">
                 <button type="button" class="btn btn-warning me-2 mb-2">All</button>
@@ -45,7 +46,7 @@
                             <h5 class="card-title">{{car.name}}</h5>
                         </a>
                         <p class="card-text">Brand: {{car.brand}}
-                            <a class="text-decoration-none text-danger" href="{% url 'edit_brand' car.brand.id %}">[Edit]</a>
+                            {% if user.is_authenticated %}<a class="text-decoration-none text-danger" href="{% url 'edit_brand' car.brand.id %}">[Edit]</a>{% endif %}
                         </p>
                         <p class="card-text">Price: {{car.price}}</p>
                         <p class="card-text">Quantity: {{car.quantity}}</p>
@@ -65,5 +66,8 @@
             </div>
             {% endfor %}
         </div>
+        {% else %}
+        <h1>No Data! Add Cars!</h1>
+        {% endif %}
     </div>
 {% endblock %}
