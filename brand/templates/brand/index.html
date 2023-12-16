@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Brand Form{% endblock %}
+
+{% block content %}
+
+<form method="post" style="width: 50%; margin: auto;">
+  {% csrf_token %}
+  <h2 class="py-4">Brand Form</h2>
+  {{ form | crispy }}
+  <button type="submit" class="btn btn-warning">Save</button>
+</form>
+
+{% endblock %}

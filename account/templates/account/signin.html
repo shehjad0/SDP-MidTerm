@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}SignIn Page{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<form action="" method="post" class="w-50 m-auto">
+    <h1 class="text-center mt-5 text-warning py-3">SignIn Page</h1>
+    {% csrf_token %}
+    {{form|crispy}}
+    <button type="submit" class="btn btn-warning mb-5">Submit</button>
+</form>
+{% endblock %}
